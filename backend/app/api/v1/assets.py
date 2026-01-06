@@ -32,7 +32,7 @@ def get_asset_type(mime_type: str) -> Optional[str]:
     return None
 
 
-@router.get("/")
+@router.get("")
 async def list_assets(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
@@ -71,7 +71,7 @@ async def list_assets(
     return {"items": items, "total": total, "page": page, "page_size": page_size}
 
 
-@router.post("/")
+@router.post("")
 async def upload_asset(
     file: UploadFile = File(...),
     name: Optional[str] = None,
@@ -186,7 +186,7 @@ async def get_asset(
         "thumbnail_url": thumbnail_url,
         "file_size": asset.file_size,
         "mime_type": asset.mime_type,
-        "metadata": asset.metadata,
+        "metadata": asset.file_metadata,
         "vector_status": asset.vector_status,
         "created_at": asset.created_at.isoformat()
     }

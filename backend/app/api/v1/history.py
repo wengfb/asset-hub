@@ -19,7 +19,7 @@ class HistoryCreate(BaseModel):
     context: Optional[dict] = None
 
 
-@router.get("/")
+@router.get("")
 async def list_history(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
@@ -103,7 +103,7 @@ async def get_recent(
     return items
 
 
-@router.post("/")
+@router.post("")
 async def record_history(
     data: HistoryCreate,
     db: AsyncSession = Depends(get_db)

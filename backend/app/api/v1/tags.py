@@ -30,7 +30,7 @@ def generate_slug(name: str) -> str:
     return slug.strip('-')
 
 
-@router.get("/")
+@router.get("")
 async def list_tags(
     db: AsyncSession = Depends(get_db)
 ):
@@ -49,7 +49,7 @@ async def list_tags(
     } for t in tags]
 
 
-@router.post("/")
+@router.post("")
 async def create_tag(
     data: TagCreate,
     db: AsyncSession = Depends(get_db)

@@ -6,6 +6,7 @@ from app.api.v1 import assets, search, tags, collections, history
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
+    redirect_slashes=False,
 )
 
 # CORS配置

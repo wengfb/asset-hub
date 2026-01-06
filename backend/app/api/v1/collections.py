@@ -24,7 +24,7 @@ class CollectionUpdate(BaseModel):
     description: Optional[str] = None
 
 
-@router.get("/")
+@router.get("")
 async def list_collections(
     db: AsyncSession = Depends(get_db)
 ):
@@ -56,7 +56,7 @@ async def list_collections(
     return items
 
 
-@router.post("/")
+@router.post("")
 async def create_collection(
     data: CollectionCreate,
     db: AsyncSession = Depends(get_db)

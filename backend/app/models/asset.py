@@ -23,7 +23,7 @@ class Asset(Base):
     mime_type = Column(String(100), nullable=False)
 
     # 元数据
-    metadata = Column(JSONB, default={})
+    file_metadata = Column("metadata", JSONB, default={})
     thumbnail_path = Column(String(512))
 
     # 向量化状态

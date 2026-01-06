@@ -1,14 +1,22 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi import Query, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from typing import Optional
 
 from app.core.database import get_db
-from app.core.clip_service import clip_service
-from app.core.milvus import milvus_service
 from app.core.minio_client import minio_client
 from app.models.asset import Asset, VideoFrame
+
+# 可选导入 AI 服务
+try:
+    from app.core.clip_service import clip_service
+    from app.core.milvus import milvus_service
+    AI_ENABLED = True
+except ImportError:
+    clip_service = None
+    milvus_service = None
+    AI_ENABLED = False
 
 router = APIRouter(prefix="/search", tags=["智能搜索"])
 
@@ -21,6 +29,9 @@ async def search_by_text(
     db: AsyncSession = Depends(get_db)
 ):
     """文字搜索图片/视频"""
+    if not AI_ENABLED:
+        raise HTTPException(status_code=503, detail="AI服务未启用")
+
     # 文本向量化
     text_vector = clip_service.encode_text(query)
 
@@ -44,6 +55,9 @@ async def search_by_image(
     db: AsyncSession = Depends(get_db)
 ):
     """以图搜图"""
+    if not AI_ENABLED:
+        raise HTTPException(status_code=503, detail="AI服务未启用")
+
     # 读取图片
     image_data = await file.read()
 
